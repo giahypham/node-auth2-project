@@ -18,6 +18,10 @@ function find() {
       }
     ]
    */
+  return db('users')
+    .join('roles', 'users.role_id', 'roles.role_id')
+    .select('user_id', 'username', 'role_name')
+     
 }
 
 function findBy(filter) {
@@ -34,6 +38,10 @@ function findBy(filter) {
       }
     ]
    */
+    return db('users')
+    .join('roles', 'users.role_id', 'roles.role_id')
+    .select('user_id', 'username', 'role_name', 'password')
+    .where(filter)  
 }
 
 function findById(user_id) {
@@ -47,6 +55,10 @@ function findById(user_id) {
       "role_name": "instructor"
     }
    */
+    return db('users')
+    .join('roles', 'users.role_id', 'roles.role_id')
+    .select('user_id', 'username', 'role_name')
+    .where('users.user_id', user_id).first() 
 }
 
 /**
@@ -67,6 +79,7 @@ function findById(user_id) {
     "role_name": "team lead"
   }
  */
+// if anything should happen the whole database is rolledback using this function rather than usual insert straight to db
 async function add({ username, password, role_name }) { // done for you
   let created_user_id
   await db.transaction(async trx => {
